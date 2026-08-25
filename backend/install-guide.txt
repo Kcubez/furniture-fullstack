@@ -1,0 +1,60 @@
+1. npm init -y
+2. npm i typescript ts-node @types/node nodemon --save-dev
+3. npx tsc --init
+4. npm i jest ts-jest supertest @types/jest @types/supertest jest-environment-node --save-dev
+5. npm i express dotenv cors helmet morgan jest-config
+6. npm i @types/express @types/cors @types/morgan --save-dev
+7. npm i bcrypt compression express-rate-limit express-validator jsonwebtoken multer
+8. npm i @types/bcrypt @types/compression @types/jsonwebtoken @types/multer --save-dev
+
+ npm i moment crypto
+ npm install cookie-parser 
+ npm i @types/cookie-parser 
+
+npm i i18next i18next-http-middleware i18next-fs-backend
+
+npm install @faker-js/faker -D
+
+npm i node-cron @types/node-cron 
+
+npm i sharp
+
+npm i bullmq ioredis 
+brew install redis
+
+npm i sanitize-html
+npm install -D @types/sanitize-html
+
+***
+https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string
+
+npm install prisma --save-dev
+npx prisma
+npx prisma init
+npx prisma migrate dev --name init
+
+npm install @prisma/client
+npx prisma generate
+npx prisma db push
+npx prisma db pull
+
+npx prisma migrate dev --create-only  --name init
+npx prisma migrate reset
+
+npx prisma migrate diff \
+--from-empty \
+--to-schema-datamodel prisma/schema.prisma \
+--script > prisma/migrations/0_init/migration.sql
+
+npx prisma migrate resolve --applied 0_init
+
+npm i ejs
+
+
+
+bullMQ , Redis , ioredis
+( Queue , Job, Worker )
+
+App ---> job ( Image Optimization Task ) ---> Queue ---> Redis <--- Worker**
+
+Boss ---> (buy me a coffee)              ---> Manager ---> Bill board <--- Staff**
