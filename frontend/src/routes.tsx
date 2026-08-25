@@ -24,6 +24,7 @@ import {
   loginLoader,
   otpLoader,
   postLoader,
+  productLoader,
 } from "./router/loader";
 import {
   confirmAction,
@@ -85,7 +86,11 @@ export const router = createBrowserRouter([
         element: <ProductRootLayout />,
         children: [
           { index: true, element: <ProductPage /> },
-          { path: ":productId", element: <ProductDetail /> },
+          {
+            path: ":productId",
+            element: <ProductDetail />,
+            loader: productLoader,
+          },
         ],
       },
     ],
