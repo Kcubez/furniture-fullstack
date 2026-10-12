@@ -93,7 +93,7 @@ export const productLoader = async ({ params }: LoaderFunctionArgs) => {
   if (!params.productId) {
     throw new Error("No Product ID provided");
   }
-  await queryClient.ensureQueryData(productQuery("?limit=4"));
+  await queryClient.ensureQueryData(productQuery("?limit=8"));
   await queryClient.ensureQueryData(oneProductQuery(Number(params.productId)));
   return { productId: params.productId };
 };

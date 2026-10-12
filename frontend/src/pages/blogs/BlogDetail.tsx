@@ -33,17 +33,17 @@ function BlogDetail() {
               <div className="text-sm">
                 <span>
                   by{" "}
-                  <span className="font-[600]">
+                  <span className="font-semibold">
                     {postDetail.post.author.fullName}{" "}
                   </span>{" "}
                   on
-                  <span className="font-[600]">
+                  <span className="font-semibold">
                     {" "}
                     {postDetail.post.updatedAt}
                   </span>{" "}
                 </span>
               </div>
-              <h3 className="my-6 text-justify text-base font-[400]">
+              <h3 className="my-6 text-justify text-base font-normal">
                 {postDetail.post.content}
               </h3>
               <img
@@ -86,7 +86,7 @@ function BlogDetail() {
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="text-muted-foreground w-3/4 text-sm font-[500]">
+                <div className="text-muted-foreground w-3/4 text-sm font-medium">
                   <p className="line-clamp-2">{post.content}</p>
                   <i>... see more</i>
                 </div>

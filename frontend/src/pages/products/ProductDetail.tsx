@@ -1,5 +1,5 @@
-import { Link, useParams } from "react-router";
-import { products } from "@/data/product";
+import { useLoaderData, useNavigate } from "react-router";
+// import { products } from "@/data/product";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import ProductCard from "@/components/products/ProductCard";
@@ -23,10 +23,20 @@ import { formatPrice } from "@/lib/utils";
 import Rating from "@/components/products/Rating";
 import AddToFavourite from "@/components/products/AddToFavourite";
 import AddToCartForm from "@/components/products/AddToCartForm";
+import { oneProductQuery, productQuery } from "@/api/query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import type { Image, Product } from "@/types";
+
+const imageUrl = import.meta.env.VITE_IMG_URL;
 
 function ProductDetail() {
-  const { productId } = useParams();
-  const product = products.find((p) => p.id === productId);
+  // const { productId } = useParams();
+  // const product = products.find((p) => p.id === productId);
+  const navigate = useNavigate();
+
+  const { productId } = useLoaderData();
+  const { data: productData } = useSuspenseQuery(productQuery("?limit=4"));
+  const { data: productDetail } = useSuspenseQuery(oneProductQuery(productId));
 
   const plugin = React.useRef(
     Autoplay({ delay: 3000, stopOnInteraction: true }),
@@ -34,21 +44,24 @@ function ProductDetail() {
 
   return (
     <div className="container mx-auto px-4 md:px-0">
-      <Button asChild variant="outline" className="mt-8">
-        <Link to="/products">
+      <Button variant="outline" className="mt-8" onClick={() => navigate(-1)}>
+        <Icons.arrowLeft />
+        {/* <Link to="/products">
           <Icons.arrowLeft />
           All Products
-        </Link>
+        </Link> */}
       </Button>
       <section className="my-6 flex flex-col gap-8 md:flex-row md:gap-16">
         <Carousel plugins={[plugin.current]} className="w-full md:w-1/2">
           <CarouselContent>
-            {product?.images.map((image) => (
-              <CarouselItem key={image}>
+            {productDetail.product?.images.map((image: Image) => (
+              <CarouselItem key={image.id}>
                 <div className="p-1">
                   <img
-                    src={image}
-                    alt={product.name}
+                    src={imageUrl + image.path}
+                    alt={productDetail.product.name}
+                    loading="lazy"
+                    decoding="async"
                     className="size-full rounded-md object-cover"
                   />
                 </div>
@@ -59,23 +72,25 @@ function ProductDetail() {
         <Separator className="mt-4 md:hidden" />
         <div className="flex w-full flex-col gap-4 md:w-1/2">
           <div className="space-y-2">
-            <h2 className="line-clamp-1 text-2xl font-bold">{product?.name}</h2>
+            <h2 className="line-clamp-1 text-2xl font-bold">
+              {productDetail.product.name}
+            </h2>
             <p className="text-muted-foreground text-base">
-              {formatPrice(Number(product?.price))}
+              {formatPrice(Number(productDetail.product.price))}
             </p>
           </div>
           <Separator className="mt-1.5" />
           <p className="text-muted-foreground text-base">
-            {product?.inventory} in stock
+            {productDetail.product.inventory} in stock
           </p>
           <div className="flex items-baseline-last justify-between">
-            <Rating rating={Number(product?.rating)} />
+            <Rating rating={Number(productDetail.product.rating)} />
             <AddToFavourite
-              productId={String(product?.id)}
-              rating={Number(product?.rating)}
+              productId={String(productDetail.product.id)}
+              rating={Number(productDetail.product.rating)}
             />
           </div>
-          <AddToCartForm canBuy={product?.status === "active"} />
+          <AddToCartForm canBuy={productDetail.product.status === "ACTIVE"} />
           <Separator className="my-5" />
           <Accordion
             type="single"
@@ -86,7 +101,7 @@ function ProductDetail() {
             <AccordionItem value="item-1" className="border-none">
               <AccordionTrigger>Description</AccordionTrigger>
               <AccordionContent className="flex flex-col gap-4 text-balance">
-                {product?.description ??
+                {productDetail.product.description ??
                   "No Description is available for this product."}
               </AccordionContent>
             </AccordionItem>
@@ -99,12 +114,8 @@ function ProductDetail() {
         </h2>
         <ScrollArea className="pb-8">
           <div className="flex gap-4">
-            {products.slice(0, 4).map((item) => (
-              <ProductCard
-                key={item.id}
-                product={item}
-                className="min-w-[260px]"
-              />
+            {productData.products.slice(0, 4).map((item: Product) => (
+              <ProductCard key={item.id} product={item} className="min-w-65" />
             ))}
           </div>
           <ScrollBar orientation="horizontal" />

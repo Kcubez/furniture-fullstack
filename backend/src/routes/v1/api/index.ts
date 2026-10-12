@@ -17,6 +17,7 @@ import {
   getProduct,
   getProductsByPagination,
   getCategoryType,
+  toggleFavorite,
 } from '../../../controllers/api/productController';
 
 const router = express.Router();
@@ -39,5 +40,6 @@ router.get('/products/:id', auth, getProduct);
 router.get('/products', auth, getProductsByPagination);
 
 router.get('/filter-type', auth, getCategoryType);
+router.patch('/products/toggle-favourite', auth, toggleFavorite);
 
 export default router;
