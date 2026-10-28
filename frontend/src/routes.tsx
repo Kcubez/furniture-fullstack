@@ -28,7 +28,7 @@ import {
 } from "./router/loader";
 import {
   confirmAction,
-  favouriteAction,
+  // favouriteAction,
   loginAction,
   logoutAction,
   otpAction,
@@ -91,7 +91,7 @@ export const router = createBrowserRouter([
             path: ":productId",
             element: <ProductDetail />,
             loader: productLoader,
-            action: favouriteAction,
+            // action: favouriteAction,
           },
         ],
       },
