@@ -36,7 +36,7 @@ export const getProduct = [
     // const product = await getProductWithRelations(+productId!); // "7" -> 7
     const cacheKey = `products:${JSON.stringify(+productId!)}`;
     const product = await getOrSetCache(cacheKey, async () => {
-      return await getProductWithRelations(+productId!);
+      return await getProductWithRelations(+productId!, userId!);
     });
 
     checkModelIfExist(product);
